@@ -20,7 +20,7 @@ class serialPort():
 
     def movingTimeSeries(self, size):
             self.tsData = [-1 for i in range(size)]
-            self.ax = plt.axes(xlim=(0, 20), ylim=(0, 10))
+            self.ax = plt.axes(xlim=(0, size), ylim=(0, 10))
             self.line, = plt.plot(self.tsData)
             plt.ion()  # interactive plots can do not block on "show"
             plt.show()  # show the plot on the screen
@@ -29,6 +29,7 @@ class serialPort():
         self.tsData.insert(0, point)
         self.tsData.pop()
         self.line.set_ydata(self.tsData)  # set the data
+        #self.ax = plt.axes(xlim=(0, len(self.tsData)), ylim=(0, max(self.tsData)))
         plt.draw()  # and draw it out
         time.sleep(0.1)  # simulate some down time
         plt.pause(0.0001)  # pause so that the drawing updates
@@ -49,11 +50,8 @@ class serialPort():
 if __name__ == '__main__':
     #example of polling from a serial port
     ser = serialPort('myPort')
-    ser.movingTimeSeries(50)
+    ser.movingTimeSeries(200)
 
-    for i in range(100):
+    while 1:
         #read from serial port here
         ser.updateTS(random.randint(1, 10))
-
-
-    print("hello world")

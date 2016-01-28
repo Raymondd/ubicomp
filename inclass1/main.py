@@ -4,8 +4,8 @@ import numpy as np
 
 class serialPort():
     def __init__(self, port):
-        #self.ser = serial.Serial('/dev/tty.usbmodem1412', 9600, timeout=1)
-        #self.flush()
+        self.ser = serial.Serial(port, 9600, timeout=1)
+        self.flush()
         print("init")
 
     def write(self, payload):
@@ -49,9 +49,12 @@ class serialPort():
 
 if __name__ == '__main__':
     #example of polling from a serial port
-    ser = serialPort('myPort')
-    ser.movingTimeSeries(200)
+    ser = serialPort('tty.usbserial-A5027IRK')
+    print(ser.read())
+
+
+    '''ser.movingTimeSeries(200)
 
     while 1:
         #read from serial port here
-        ser.updateTS(random.randint(1, 10))
+        ser.updateTS(random.randint(1, 10))'''

@@ -4,9 +4,8 @@ import numpy as np
 
 class serialPort():
     def __init__(self, port):
-        self.ser = serial.Serial(port, 9600, timeout=1)
-        self.flush()
-        print("init")
+        self.ser = serial.Serial(port, 57600, timeout=1)
+        self.ser.flush()
 
     def write(self, payload):
         self.ser.write(payload + '\r\n')
@@ -14,24 +13,21 @@ class serialPort():
 
     def read(self):
         payload = self.ser.read()
-        print payload
-        #return a casted integer type
         return ord(payload)
 
     def movingTimeSeries(self, size):
-            self.tsData = [-1 for i in range(size)]
-            self.ax = plt.axes(xlim=(0, size), ylim=(0, 10))
-            self.line, = plt.plot(self.tsData)
-            plt.ion()  # interactive plots can do not block on "show"
-            plt.show()  # show the plot on the screen
+        self.tsData = [-1 for i in range(size)]
+        self.ax = plt.axes(xlim=(0, size), ylim=(0, 255))
+        self.line, = plt.plot(self.tsData)
+        plt.ion()  # interactive plots can do not block on "show"
+        plt.show()  # show the plot on the screen
 
     def updateTS(self, point):
         self.tsData.insert(0, point)
         self.tsData.pop()
         self.line.set_ydata(self.tsData)  # set the data
-        #self.ax = plt.axes(xlim=(0, len(self.tsData)), ylim=(0, max(self.tsData)))
         plt.draw()  # and draw it out
-        time.sleep(0.1)  # simulate some down time
+        #time.sleep(0.1)  # simulate some down time
         plt.pause(0.0001)  # pause so that the drawing updates
 
     def graph(self, x, y):
@@ -49,12 +45,10 @@ class serialPort():
 
 if __name__ == '__main__':
     #example of polling from a serial port
-    ser = serialPort('tty.usbserial-A5027IRK')
-    print(ser.read())
-
-
-    '''ser.movingTimeSeries(200)
+    ser = serialPort('/dev/tty.usbserial-A5027IRK')
+    ser.movingTimeSeries(300)
 
     while 1:
-        #read from serial port here
-        ser.updateTS(random.randint(1, 10))'''
+        out = ser.read()
+        #print(out)
+        ser.updateTS(out)

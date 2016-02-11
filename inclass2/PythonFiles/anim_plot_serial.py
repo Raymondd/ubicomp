@@ -25,7 +25,7 @@ ax1.add_line(line1)
 
 #setup the frequency plot
 ax2 = fig.add_subplot(2, 1, 2)
-ax2.set_xlim(0, audio.rate)
+ax2.set_xlim(0, BUFFER_SIZE-1)
 ax2.set_ylim(-50, 100)
 line2 = Line2D([], [], color='blue', linewidth=0.5)
 ax2.add_line(line2)
@@ -46,8 +46,8 @@ def read_serial_forever():
 # initialization, plot nothing (this is also called on resize)
 def init():
     line1.set_data([], [])
-    line2.set_data([], [])
-    return line1, line2
+    #line2.set_data([], [])
+    return line1, #line2
 
 
 # animation function.  This is called sequentially, after calling plt.show() (on main thread)

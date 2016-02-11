@@ -44,7 +44,9 @@ def animate(i):
     y_min = min(y)
     delta = y_max - y_min
 
-    if delta < 60:
+    if delta < 30:
+        print("GROUND")
+    elif delta < 60:
         print("NO TOUCH")
     elif delta < 100:
         print("HOVER")
